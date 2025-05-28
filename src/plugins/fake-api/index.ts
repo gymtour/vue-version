@@ -46,12 +46,16 @@ export default function () {
 
   const workerUrl = `${import.meta.env.BASE_URL ?? '/'}mockServiceWorker.js`
 
-  worker.start({
-    serviceWorker: {
-      url: workerUrl,
-    },
-    onUnhandledRequest: 'bypass',
-  }).catch(error => {
-    console.error('MSW initialization failed:', error)
-  })
+  // Wrap worker.start() in try-catch and use safer defaults
+  try {
+    worker.start({
+      serviceWorker: {
+        url: workerUrl,
+      },
+      onUnhandledRequest: 'warn', // Changed from 'bypass' to 'warn' for better debugging
+    })
+  }
+  catch (error) {
+    console.error('[MSW] Failed to initialize:', error)
+  }
 }

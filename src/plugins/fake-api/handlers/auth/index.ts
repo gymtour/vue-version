@@ -5,7 +5,8 @@ import type { UserOut } from '@db/auth/types'
 
 // Handlers for auth
 export const handlerAuth = [
-  http.post<PathParams>('/api/auth/login', async ({ request }) => {
+  // Ensure the route matches exactly what the frontend is calling
+  http.post('/api/auth/login', async ({ request }) => {
     try {
       const { email, password } = await request.json() as { email: string; password: string }
 
