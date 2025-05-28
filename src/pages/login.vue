@@ -45,6 +45,8 @@ const credentials = ref({
 const rememberMe = ref(false)
 
 const login = async () => {
+  errors.value = { email: undefined, password: undefined }
+  
   try {
     const res = await $api('/auth/login', {
       method: 'POST',
@@ -53,7 +55,7 @@ const login = async () => {
         password: credentials.value.password,
       },
       onResponseError({ response }) {
-        errors.value = response._data.errors
+        errors.value = response._data?.errors || { email: ['An error occurred'] }
       },
     })
 
@@ -72,7 +74,7 @@ const login = async () => {
     })
   }
   catch (err) {
-    console.error(err)
+    console.error('Login error:', err)
   }
 }
 
